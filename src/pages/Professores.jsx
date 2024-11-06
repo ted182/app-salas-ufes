@@ -22,7 +22,7 @@ function transformaEmArray(obj) {
 
     keys.forEach(k => {
         //  pular o id 0
-        if ( k > 0 ) {
+        if (k > 0) {
             arr.push({
                 id: k,
                 nome: values[k].nome,
@@ -43,49 +43,65 @@ const Professores = () => {
     const [tabelaProfs, setTabelaProfs] = useState(transformaEmArray(dados.professores));
 
     //const tabela = transformaEmArray(dados.professores);
+    function handleAddProfessor(event) {
+        event.preventDefault();
+        dados.addProfessor('Juliana Tedesca', 'Eng. Civil', 'Direito');
+        setTabelaProfs( transformaEmArray(dados.professores) );
+        console.log('professor adicionado!')
+
+    };
 
     return (
-        <div>
+        <div className='w-screen'>
 
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                        {cabecalho.map((d, index) => (
-                            <th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{d.value}</th>
-                        ))}
-                    </tr>
-                </thead>
+            <div className='p-4 flex justify-center'>
+                <button className='bg-green-600 p-2' onClick={ev => handleAddProfessor(ev)}> Adicionar Professor</button>
+            </div>
 
-                <tbody className="bg-white divide-y divide-gray-200">
-
-
-                    {tabelaProfs.map((prof, idp) => (
-
-                        <tr key={idp}>
-
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                botoes
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                {prof.id}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                {prof.nome}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                {prof.departamento}
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                {prof.disciplina}
-                            </td>
-
+            <div>
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                            {cabecalho.map((d, index) => (
+                                <th key={index} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{d.value}</th>
+                            ))}
                         </tr>
+                    </thead>
 
-                    ))}
+                    <tbody className="bg-white divide-y divide-gray-200">
 
-                </tbody>
-            </table>
+
+                        {tabelaProfs.map((prof, idp) => (
+
+                            <tr key={idp}>
+
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <button className='bg-slate-200 p-2'>Deletar</button>
+                                    <button className='bg-slate-200 p-2 ml-2'>Editar</button>
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {prof.id}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {prof.nome}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {prof.departamento}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {prof.disciplina}
+                                </td>
+
+                            </tr>
+
+                        ))}
+
+                    </tbody>
+                </table>
+            </div>
+
+
 
         </div>
     );

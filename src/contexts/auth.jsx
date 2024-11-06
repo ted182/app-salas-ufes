@@ -7,7 +7,7 @@ import {
     onAuthStateChanged
 } from 'firebase/auth';
 
-import { auth } from '../services/database';
+//import { auth } from '../services/database';
 
 const AuthContext = createContext();
 //const localStringStorage = '@tickets';
