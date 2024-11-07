@@ -20,6 +20,13 @@ function transformaEmArray(obj) {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
 
+    console.log(values)
+
+    values.forEach((k, idx) => {
+        if (idx) arr.push( { id: keys[idx], ...k} )
+    });
+
+    /*
     keys.forEach(k => {
         //  pular o id 0
         if (k > 0) {
@@ -31,6 +38,7 @@ function transformaEmArray(obj) {
             });
         };
     });
+    */
     return arr;
 };
 
@@ -47,8 +55,18 @@ const Professores = () => {
         event.preventDefault();
         dados.addProfessor('Juliana Tedesca', 'Eng. Civil', 'Direito');
         setTabelaProfs( transformaEmArray(dados.professores) );
-        console.log('professor adicionado!')
+        console.log('professor adicionado!');
+    };
 
+    function handleDeleteProfessor(id) {
+        //event.preventDefault();
+        //console.log(id)
+        if (dados.removeProfessor(id)) {
+            setTabelaProfs( transformaEmArray(dados.professores) );
+            console.log('professor removido com sucesso!')
+            return;
+        };
+        console.log('erro ao deletar professor!');
     };
 
     return (
@@ -77,7 +95,7 @@ const Professores = () => {
                             <tr key={idp}>
 
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <button className='bg-slate-200 p-2'>Deletar</button>
+                                    <button className='bg-slate-200 p-2' onClick={() => handleDeleteProfessor(prof.id)}>Deletar</button>
                                     <button className='bg-slate-200 p-2 ml-2'>Editar</button>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">

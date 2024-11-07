@@ -88,7 +88,7 @@ function agendaDaSemana() {
     };
 
     function removeProfessor(id) {
-        if (professores[id]) {
+        if (id && professores[id]) {
             delete professores[id];
             return true;
         };
