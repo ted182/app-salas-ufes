@@ -1,22 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Pencil, Trash2, Save } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 //  importação do contexto
 import DadosContext from '../contexts/dados';
-//import { indexedDBLocalPersistence } from 'firebase/auth';
 
 
 
 const cabecalho = [
     { id: 0, value: 'ID' },
     { id: 1, value: 'Nome' },
-    { id: 2, value: 'Departamento' },
-    { id: 3, value: 'Matéria' }
+    { id: 2, value: 'Prédio' },
 ];
 
 function transformaEmArray(obj) {
 
+    //console.log(obj)
     const arr = [];
     const keys = Object.keys(obj);
     const values = Object.values(obj);
@@ -24,7 +23,7 @@ function transformaEmArray(obj) {
     //console.log(values)
 
     values.forEach((k, idx) => {
-        if (idx) arr.push({ id: keys[idx], ...k })
+        arr.push({ id: keys[idx], ...k })
     });
 
     return arr;
@@ -32,53 +31,58 @@ function transformaEmArray(obj) {
 
 
 
-const Professores = () => {
+const Salas = () => {
 
     const { dados, dadosAux, setDadosAux } = useContext(DadosContext);
 
-    const [tabelaProfs, setTabelaProfs] = useState([{ id: 0, nome: 0, departamento: 0, disciplina: 0 }]);
+    //const location = useLocation();
+
+    const [tabelaRooms, setTabelaRooms] = useState([{ id: 0, nome: 0, predio: 0 }]);
     const [editingId, setEditingId] = useState(null);
-    const [editFormData, setEditFormData] = useState({
-        nome: '',
-        departamento: '',
-        disciplina: ''
-    });
+    const [editFormData, setEditFormData] = useState({ nome: '', predio: '' });
+
+    // variaveis de estilização da tabela
+    const [focusColor, setFocusColor] = useState(null);
 
     useEffect(() => {
         //console.log('rodou');
-        if (!dados?.professores) return; // Retorna se não houver dados
-        setTabelaProfs(transformaEmArray(dados.professores));
+        if (!dados?.salas) return; // Retorna se não houver dados
+        setTabelaRooms(transformaEmArray(dados.salas));
     }, [dados]);
 
-    //const tabela = transformaEmArray(dados.professores);
-    function handleAddProfessor(event) {
+    
+
+
+
+
+
+    function handleAddRoom(event) {
         //event.preventDefault();
-        dados.addProfessor('-', '-', '-');
+        dados.addSala('-', '-');
         setDadosAux((prevVar) => prevVar + 1);
-        setTabelaProfs(transformaEmArray(dados.professores));
-        console.log('professor adicionado!');
+        setTabelaRooms(transformaEmArray(dados.salas));
+        console.log('sala adicionada com sucesso!')
     };
 
-    function handleDeleteProfessor(id) {
-        //event.preventDefault();
-        //console.log(id)
+    function handleDeleteRoom(id) {
+        //event.preventDefault(); 
         if (editingId) return;
-        if (dados.removeProfessor(id)) {
-            setDadosAux((prevVar) => prevVar + 1);
-            setTabelaProfs(transformaEmArray(dados.professores));
-            console.log('professor removido com sucesso!')
+        if (dados.removeSala(id)) {
+            //setDadosAux((prevVar) => prevVar + 1);
+            setTabelaRooms(transformaEmArray(dados.salas));
+            console.log('sala removida com sucesso!')
             return;
         };
-        console.log('erro ao deletar professor!');
+        console.log('erro ao deletar sala!');
     };
 
     //  função pra trocar os botões de edit pra save e os campos pra input text
-    function handleEditClick(user) {
+    function handleEditClick(user, idRowTable) {
+        setFocusColor(idRowTable);
         setEditingId(user.id);
         setEditFormData({
             nome: user.nome,
-            departamento: user.departamento,
-            disciplina: user.disciplina
+            predio: user.predio,
         });
     };
 
@@ -91,23 +95,23 @@ const Professores = () => {
     };
 
     //  função pra salvar os novos dados da edição dos professores
-    function handleSaveClick(prof) { 
-        const newUsers = tabelaProfs.map(user => {
+    function handleSaveClick(prof) {
+        const newUsers = tabelaRooms.map(user => {
             if (user.id === prof.id) {
                 return {
                     ...user,
                     nome: editFormData.nome,
-                    departamento: editFormData.departamento,
-                    disciplina: editFormData.disciplina
+                    predio: editFormData.predio,
                 };
             }
             return user;
-        });  
-        //  adicionar checagem para casod e erro na edicao dos dados gerais   
-        dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina);     // salva no objeto geral
+        });
+        //  adicionar checagem para caso de erro na edicao dos dados gerais   
+        dados.setSala(prof.id, editFormData.nome, editFormData.predio);             // salva no objeto geral
         setDadosAux((prevVar) => prevVar + 1);
-        setTabelaProfs(newUsers);                                                                               // seta novo usuario no frontend
-        setEditingId(null);                                                                                     // desativa o modo edição
+        setTabelaRooms(newUsers);                                                   // seta novo usuario no frontend
+        setEditingId(null);                                                         // desativa o modo edição
+        setFocusColor(null);
     };
 
 
@@ -116,7 +120,7 @@ const Professores = () => {
         <div className='w-screen'>
 
             <div className='p-4 flex justify-center'>
-                <button className='bg-green-500 p-2 rounded' onClick={ev => handleAddProfessor(ev)}> Adicionar Professor</button>
+                <button className='bg-green-500 p-2 rounded' onClick={ev => handleAddRoom(ev)}> Adicionar Sala</button>
             </div>
 
             <div>
@@ -133,12 +137,13 @@ const Professores = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
 
 
-                        {tabelaProfs.map((prof, idp) => (
+                        {tabelaRooms.map((prof, idp) => (
 
-                            <tr key={idp}>
+                            <tr key={idp} className={`${focusColor === idp ? 'bg-red-200' : ''} hover:bg-gray-100`}>
 
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <button className='bg-red-500 p-3' onClick={() => handleDeleteProfessor(prof.id)}>
+
+                                    <button className='bg-red-500 p-3' onClick={() => handleDeleteRoom(prof.id)}>
                                         <div className='flex items-center'>
                                             <div><Trash2 className='w-4 h-4' /></div>
                                         </div>
@@ -152,7 +157,7 @@ const Professores = () => {
                                             </div>
                                         </button>
                                     ) : (
-                                        <button className='bg-slate-200 p-3 ml-2' onClick={() => handleEditClick(prof)}>
+                                        <button className='bg-slate-200 p-3 ml-2' onClick={() => handleEditClick(prof, idp)}>
                                             <div className='flex items-center'>
                                                 <div><Pencil className='w-4 h-4' /></div>
                                             </div>
@@ -180,26 +185,13 @@ const Professores = () => {
                                     {editingId === prof.id ? (
                                         <input
                                             type="text"
-                                            name="departamento"
-                                            value={editFormData.departamento}
+                                            name="predio"
+                                            value={editFormData.predio}
                                             onChange={handleEditFormChange}
                                             className="px-2 py-1 border rounded"
                                         />
                                     ) : (
-                                        prof.departamento
-                                    )}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    {editingId === prof.id ? (
-                                        <input
-                                            type="text"
-                                            name="disciplina"
-                                            value={editFormData.disciplina}
-                                            onChange={handleEditFormChange}
-                                            className="px-2 py-1 border rounded"
-                                        />
-                                    ) : (
-                                        prof.disciplina
+                                        prof.predio
                                     )}
                                 </td>
 
@@ -215,4 +207,4 @@ const Professores = () => {
     );
 };
 
-export default Professores
+export default Salas

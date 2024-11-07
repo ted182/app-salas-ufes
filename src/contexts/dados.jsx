@@ -46,10 +46,10 @@ function agendaDaSemana() {
     //const cloneAgendaSemReferencia = JSON.parse(JSON.stringify( defaultAgenda() ));
 
     let salas = {
-        1: { name: 'sala-101', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        2: { name: 'sala-201', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        3: { name: 'sala-301', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        4: { name: 'sala-401', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
+        1: { nome: 'sala-101', predio: 'CT-1', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
+        2: { nome: 'sala-201', predio: 'CT-2', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
+        3: { nome: 'sala-301', predio: 'CT-3', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
+        4: { nome: 'sala-401', predio: 'CT-4', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
     };
 
     //  gera agenda vazia
@@ -103,7 +103,7 @@ function agendaDaSemana() {
         return false;
     };
 
-    function addSala(roomName) {
+    function addSala(roomName, buildingName) {
         // Verifica o último ID registrado
         const lastRoomId = Math.max(0, ...Object.keys(salas).map(Number));
 
@@ -112,7 +112,14 @@ function agendaDaSemana() {
         };
 
         const roomId = nextRoomId++;
-        salas[roomId] = { name: roomName, agenda: JSON.parse(JSON.stringify( defaultAgenda() )) };
+        salas[roomId] = { nome: roomName, predio: buildingName, agenda: JSON.parse(JSON.stringify( defaultAgenda() )) };
+    };
+
+    function setSala(roomId, name, building) {
+        salas[roomId] = {
+            nome: name,
+            predio: building,
+        };
     };
 
     function removeSala(id) {
@@ -131,6 +138,7 @@ function agendaDaSemana() {
         setProfessor,
         removeProfessor,
         addSala,
+        setSala,
         removeSala
     };
 

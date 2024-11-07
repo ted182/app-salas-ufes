@@ -39,10 +39,8 @@ function createProfessorSelect(obj) {
     const values = Object.values(obj);
 
     values.forEach((k, idx) => {
-        if (idx) arr.push({ id: keys[idx], value: k.nome, label: k.nome })
+        if (idx) arr.push({ id: keys[idx], value: k.nome, label: `${k.nome} (${k.disciplina})` })
     });
-
-    //console.log(arr)
 
     return arr;
 };
@@ -69,9 +67,10 @@ const Header = () => {
 
     
     useEffect(() => {
+        //console.log('verificando select professores no header...')
         if (!dados?.professores) return; // Retorna se não houver dados
         setReservaDataProf( createProfessorSelect(dados.professores) );
-    }, [dadosAux]); 
+    }, [dados, dadosAux]); 
 
 
 
@@ -133,7 +132,7 @@ const Header = () => {
                 <div className='flex flex-col'>
                     <Link to='/'><button className={classButtonOptions}>Home</button></Link>
                     <Link to='/professores'><button className={classButtonOptions}>Cadastro de Professores</button></Link>
-                    <button className={classButtonOptions}>Cadastro de Salas</button>
+                    <Link to='/salas'><button className={classButtonOptions}>Cadastro de Salas</button></Link>
                 </div>
             </div>
         </header>

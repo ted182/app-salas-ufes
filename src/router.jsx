@@ -7,6 +7,7 @@ import App from './App.jsx';
 import Errorpage from './pages/ErrorPage.jsx';
 import Home from './pages/Home.jsx';
 import Professores from './pages/Professores.jsx';
+import Salas from './pages/Salas.jsx';
 
 //  importar contexto
 import AuthContext from './contexts/auth.jsx';
@@ -47,7 +48,11 @@ export const rts = createBrowserRouter([
       {
         path: '/professores',
         element: <Professores />
-      }
+      },
+      {
+        path: '/salas',
+        element: <Salas />
+      },
     ]
   }
 ]);
