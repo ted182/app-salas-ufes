@@ -1,24 +1,113 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import Select from 'react-select';
+import { Save } from 'lucide-react';
 
 //  importação do contexto
 import DadosContext from '../contexts/dados';
 
-const Modal = () => {
-    
-    const { modalIsOpen, setModalIsOpen } = useContext(DadosContext);
-    
-    //const [isOpen, setModalIsOpen] = useState(false);
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+
+
+
+const diasDaSemana = [
+    { id: 'segunda', value: 'Segunda' },
+    { id: 'terca', value: 'Terça' },
+    { id: 'quarta', value: 'Quarta' },
+    { id: 'quinta', value: 'Quinta' },
+    { id: 'sexta', value: 'Sexta' },
+    { id: 'sabado', value: 'Sábado' },
+    { id: 'domingo', value: 'Domingo' },
+];
+
+const horarios = [
+    { id: 1, value: '07:00 - 08:00' },
+    { id: 2, value: '08:00 - 09:00' },
+    { id: 3, value: '09:00 - 10:00' },
+    { id: 4, value: '10:00 - 11:00' },
+    { id: 5, value: '11:00 - 12:00' },
+    { id: 6, value: '12:00 - 13:00' },
+    { id: 7, value: '13:00 - 14:00' },
+    { id: 8, value: '14:00 - 15:00' },
+    { id: 9, value: '15:00 - 16:00' },
+    { id: 10, value: '16:00 - 17:00' },
+    { id: 11, value: '17:00 - 18:00' },
+    { id: 12, value: '18:00 - 19:00' },
+];
+
+function findValue(array, id) {
+    const found = array.find(x => x.id === id);
+    return found.value;
+};
+
+function createProfessorSelect(obj) {
+
+    const arr = [];
+    const keys = Object.keys(obj);
+    const values = Object.values(obj);
+
+    values.forEach((k, idx) => {
+        if (idx) arr.push({ id: keys[idx], value: k.nome, label: `${k.nome} (${k.disciplina})` })
+    });
+
+    return arr;
+};
+
+
+const Modal = () => {
+
+    const { dados, dadosAux, setDadosAux, modal, setModal, modalData } = useContext(DadosContext);
+
+    //const [isOpen, setModal] = useState(false);
+    const [reservaProf, setReservaProf] = useState(null);
+    const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
+    
+    //  variaveis que vão preencher os dados do modal
+    const [dia, setDia] = useState('-');
+    const [horario, setHorario] = useState('-');
+    const [disciplina, setDisciplina] = useState('-');
+    
+
+
+    useEffect(() => {
+        
+        if (!dados?.professores) return; // Retorna se não houver dados
+        if (!modalData.idDia) return;
+
+        setReservaDataProf(createProfessorSelect(dados.professores));
+
+        //console.log(modalData.idDia)
+        //console.log(modalData.idHorario)
+        //console.log(modalData.idProfessor)
+        //console.log(modalData.idSala)
+        //console.log(dados.salas[modalData.idSala].agenda['segunda'])
+
+        //console.log(dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina)
+
+        setDia( findValue(diasDaSemana, modalData.idDia) );
+        setHorario( findValue(horarios, modalData.idHorario) );
+        setDisciplina( dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina );
+
+    }, [dados, dadosAux, modalData]);
+
+    
+
+    const handleSubmit = (ev) => {
+        ev.preventDefault();
         // Handle form submission logic here
-        console.log(`First Name: ${firstName}, Last Name: ${lastName}`);
-        setModalIsOpen(false);
+        //console.log(`First Name: ${firstName}, Last Name: ${lastName}`);    
+        //console.log('valor do select model: ', reservaProf)     
+
+        if ( dados.setAgenda(modalData.idSala, modalData.idDia, modalData.idHorario, reservaProf.id) ) {
+            setDadosAux((prevVar) => prevVar + 1);
+            console.log('tabela atualizada!');            
+        } else {
+            console.log('erro ao salvar dados!'); 
+        };
+        //console.log(dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario])
+        setModal(false);
     };
 
-    if (!modalIsOpen) {
+    if (!modal) {
         return null;
     }
 
@@ -26,55 +115,53 @@ const Modal = () => {
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Enter Your Name</h2>
+                    <h2 className="text-xl font-bold">Agendamento</h2>
                     <button
-                        onClick={() => setModalIsOpen(false)}
+                        onClick={() => setModal(false)}
                         className="text-gray-500 hover:text-gray-700"
                     >
                         ✕
                     </button>
                 </div>
+                <dir className='p-0'>
+                    <p>Dia da semana: {dia}</p>
+                    <p>Horário: {horario}</p>
+                    <p>Matéria agendada: {disciplina}</p>
+                    <div className={`p-2 mt-2 text-center text-white ${disciplina != 'Horario Vago' ? 'bg-red-600' : ''} ''`}>
+                        <p className='font-bold'>ATENÇÃO!</p>
+                        <p>Ja existe matéria agendada no horário selecionado</p>
+                    </div>
+                </dir>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-2">
-                            First Name
+                            Selecionar Matéria:
                         </label>
-                        <input
-                            type="text"
-                            value={firstName}
-                            onChange={(e) => setFirstName(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter first name"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">
-                            Last Name
-                        </label>
-                        <input
-                            type="text"
-                            value={lastName}
-                            onChange={(e) => setLastName(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Enter last name"
+                        <Select
+                            placeholder='Professor/Matéria'
+                            value={reservaProf}
+                            onChange={(ev) => { setReservaProf(ev) }}
+                            options={reservaDataProf}
                         />
                     </div>
 
                     <div className="flex justify-end space-x-2 mt-4">
                         <button
                             type="button"
-                            onClick={() => setModalIsOpen(false)}
+                            onClick={() => setModal(false)}
                             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                         >
-                            Submit
+                            <div className='flex items-center'>
+                                <div><Save className='w-4 h-4' /></div>
+                                <div className='ml-2'>Salvar</div>
+                            </div>
                         </button>
                     </div>
                 </form>

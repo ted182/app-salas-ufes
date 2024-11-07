@@ -30,7 +30,7 @@ function transformaEmArray(obj) {
 
 const Home = () => {
 
-    const { dados } = useContext(DadosContext);
+    const { dados, setModalData } = useContext(DadosContext);
 
     const [tabela, setTabela] = useState(null);
     const [salas, setSalas] = useState([{ id: 0, nome: 0, predio: 0 }]);
@@ -52,6 +52,7 @@ const Home = () => {
         dados.setAgenda(id, 'quarta', 5, 2);
         //console.log(dados.salas[id])
         setTabela(dados.salas[id]);
+        setModalData( {idSala: id, idDia: 0, idHorario: 0 , idProfessor: 0} );
         setPressedColor(id);
     };
 

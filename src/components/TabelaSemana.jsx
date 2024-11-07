@@ -32,10 +32,27 @@ const horarios = [
 ];
 
 
-
 const TabelaSemana = ({ tabela }) => {
 
-    const { modalIsOpen, setModalIsOpen } = useContext(DadosContext);
+    const { setModal, setDadosAux, setModalData } = useContext(DadosContext);
+
+    function handleModal(dia, horario, professor) {
+        //console.log(modalData)
+        //console.log({ dia: dia.id, horario: horario.value })
+        //console.log(professor)
+
+        setModalData(prev => {
+            //prev['idSala'] = 0;
+            prev['idDia'] = dia.id;
+            prev['idHorario'] = horario.id;
+            prev['idProfessor'] = professor.id;
+            return prev;
+        });
+
+        setDadosAux((prevVar) => prevVar + 1);
+
+        setModal(true);
+    };
 
     return (
         <table className="min-w-full divide-y divide-gray-200">
@@ -57,10 +74,10 @@ const TabelaSemana = ({ tabela }) => {
 
                                 {tabela ? (
 
-                                    <button 
+                                    <button
                                         className='w-full h-full hover:bg-slate-200'
-                                        onClick={() => setModalIsOpen(true)}> 
-                                    {tabela.agenda[dia.id][horario.id].disciplina} 
+                                        onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
+                                        {tabela.agenda[dia.id][horario.id].disciplina}
                                     </button>
 
 

@@ -27,16 +27,19 @@ function agendaDaSemana() {
 
     let professores = {
         0: {
+            id: 0,
             nome: 'Horario Vago',
             departamento: 'Horario Vago',
             disciplina: 'Horario Vago'
         },
         1: {
+            id: 1,
             nome: 'João',
             departamento: 'Matemática',
             disciplina: 'Cálculo I'
         },
         2: {
+            id: 2,
             nome: 'Pedro',
             departamento: 'Física',
             disciplina: 'Física Básica I'
@@ -69,7 +72,8 @@ function agendaDaSemana() {
 
     function setAgenda(salaId, diaSemana, horarioId, professorId) {
         if (salas[salaId]) {    
-            salas[salaId].agenda[diaSemana][horarioId].disciplina = professores[professorId].disciplina;
+            console.log(salaId, diaSemana, horarioId, professorId)
+            salas[salaId].agenda[diaSemana][horarioId] = professores[professorId];
             return true;
         };
         return false;
@@ -84,11 +88,12 @@ function agendaDaSemana() {
         };
 
         const teacherId = nextTeacherId++;
-        professores[teacherId] = { nome: name, departamento: depart, disciplina: subject };
+        professores[teacherId] = { id: teacherId, nome: name, departamento: depart, disciplina: subject };
     };
 
     function setProfessor(professorId, name, depart, subject) {
         professores[professorId] = {
+            id: professorId,
             nome: name,
             departamento: depart,
             disciplina: subject
@@ -173,9 +178,10 @@ export const DadosProvider = ({ children }) => {
         setDados(ag);
     }, []);
     
-    const [dados, setDados] = useState(null);               // <-- DADOS GERAIS
-    const [dadosAux, setDadosAux] = useState(0);            // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
-    const [modalIsOpen, setModalIsOpen] = useState(false);  // <-- MODAL PARA EDITAR DADOS DA TABELA
+    const [dados, setDados] = useState(null);                                       // <-- DADOS GERAIS
+    const [dadosAux, setDadosAux] = useState(0);                                    // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
+    const [modal, setModal] = useState(false);                                      // <-- MODAL PARA EDITAR DADOS DA TABELA
+    const [modalData, setModalData] = useState(false);                              // <-- DADOS QUE SERÃO PASSADOS PARA O MODAL
 
     return (
         <DadosContext.Provider
@@ -183,8 +189,10 @@ export const DadosProvider = ({ children }) => {
                 dados,
                 dadosAux,
                 setDadosAux,
-                modalIsOpen,
-                setModalIsOpen
+                modal,
+                setModal,
+                modalData,
+                setModalData
             }}
         >
             {children}
