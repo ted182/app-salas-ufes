@@ -87,6 +87,14 @@ function agendaDaSemana() {
         professores[teacherId] = { nome: name, departamento: depart, disciplina: subject };
     };
 
+    function setProfessor(professorId, name, depart, subject) {
+        professores[professorId] = {
+            nome: name,
+            departamento: depart,
+            disciplina: subject
+        };
+    };
+
     function removeProfessor(id) {
         if (id && professores[id]) {
             delete professores[id];
@@ -120,6 +128,7 @@ function agendaDaSemana() {
         professores,
         setAgenda,
         addProfessor,
+        setProfessor,
         removeProfessor,
         addSala,
         removeSala
