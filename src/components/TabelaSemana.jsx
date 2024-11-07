@@ -1,4 +1,11 @@
 
+import React, { useContext } from 'react';
+
+//  importação do contexto
+import DadosContext from '../contexts/dados';
+
+
+
 const diasDaSemana = [
     { id: 'segunda', value: 'Segunda' },
     { id: 'terca', value: 'Terça' },
@@ -27,6 +34,9 @@ const horarios = [
 
 
 const TabelaSemana = ({ tabela }) => {
+
+    const { modalIsOpen, setModalIsOpen } = useContext(DadosContext);
+
     return (
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -47,7 +57,12 @@ const TabelaSemana = ({ tabela }) => {
 
                                 {tabela ? (
 
-                                    tabela.agenda[dia.id][horario.id].disciplina
+                                    <button 
+                                        className='w-full h-full hover:bg-slate-200'
+                                        onClick={() => setModalIsOpen(true)}> 
+                                    {tabela.agenda[dia.id][horario.id].disciplina} 
+                                    </button>
+
 
                                 ) : ('sem tabela')
                                 }

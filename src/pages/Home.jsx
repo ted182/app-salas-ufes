@@ -6,6 +6,7 @@ import DadosContext from '../contexts/dados';
 
 //  importação dos componentes
 import TabelaSemana from '../components/TabelaSemana';
+import Modal from '../components/Modal';
 
 
 
@@ -47,8 +48,6 @@ const Home = () => {
     }, [dados]);
 
 
-
-
     const handleClick = (id) => {
         dados.setAgenda(id, 'quarta', 5, 2);
         //console.log(dados.salas[id])
@@ -56,22 +55,17 @@ const Home = () => {
         setPressedColor(id);
     };
 
-    const handleClickteste = (id) => {
-        dados.setAgenda(id, 'segunda', 2, 1);
-        console.log(dados.salas[id]);
-        setTabela(dados.salas[id]);
-    };
-
-
+    
     return (
         <>
+            <Modal />
             <div>
                 <div>SALAS</div>
                 <div>
                     {salas.map(sala => (
                         <button 
                             key={sala.id} 
-                            className={`p-4 ml-4 ${pressedColor === sala.id ? 'bg-red-200' : 'bg-sky-500/50'} hover:bg-gray-200`} 
+                            className={`p-4 ml-4 ${pressedColor === sala.id ? 'bg-red-200' : 'bg-sky-500/50'} hover:outline-none hover:ring-2 hover:ring-black`} 
                             onClick={() => handleClick(sala.id)}>
                             
                             <div className='flex flex-col'>

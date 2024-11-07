@@ -175,6 +175,7 @@ export const DadosProvider = ({ children }) => {
     
     const [dados, setDados] = useState(null);               // <-- DADOS GERAIS
     const [dadosAux, setDadosAux] = useState(0);            // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
+    const [modalIsOpen, setModalIsOpen] = useState(false);  // <-- MODAL PARA EDITAR DADOS DA TABELA
 
     return (
         <DadosContext.Provider
@@ -182,6 +183,8 @@ export const DadosProvider = ({ children }) => {
                 dados,
                 dadosAux,
                 setDadosAux,
+                modalIsOpen,
+                setModalIsOpen
             }}
         >
             {children}
