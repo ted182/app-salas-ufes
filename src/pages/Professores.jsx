@@ -20,25 +20,12 @@ function transformaEmArray(obj) {
     const keys = Object.keys(obj);
     const values = Object.values(obj);
 
-    console.log(values)
+    //console.log(values)
 
     values.forEach((k, idx) => {
         if (idx) arr.push( { id: keys[idx], ...k} )
     });
-
-    /*
-    keys.forEach(k => {
-        //  pular o id 0
-        if (k > 0) {
-            arr.push({
-                id: k,
-                nome: values[k].nome,
-                departamento: values[k].departamento,
-                disciplina: values[k].disciplina
-            });
-        };
-    });
-    */
+    
     return arr;
 };
 
