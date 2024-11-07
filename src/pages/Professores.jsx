@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { Pencil, Trash2, Save } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 //  importação do contexto
 import DadosContext from '../contexts/dados';
-import { indexedDBLocalPersistence } from 'firebase/auth';
+//import { indexedDBLocalPersistence } from 'firebase/auth';
 
 
 
@@ -35,7 +36,13 @@ const Professores = () => {
 
     const { dados } = useContext(DadosContext);
 
-    const [tabelaProfs, setTabelaProfs] = useState(transformaEmArray(dados.professores));
+    const [tabelaProfs, setTabelaProfs] = useState( [{id: 0, nome: 0, departamento: 0, disciplina: 0}] );
+
+    useEffect(() => {
+        //console.log(dados);
+        if (!dados?.professores) return; // Retorna se não houver dados
+        setTabelaProfs( transformaEmArray(dados.professores) );
+    }, [dados]);
 
     //const tabela = transformaEmArray(dados.professores);
     function handleAddProfessor(event) {
@@ -82,8 +89,8 @@ const Professores = () => {
                             <tr key={idp}>
 
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <button className='bg-slate-200 p-2' onClick={() => handleDeleteProfessor(prof.id)}>Deletar</button>
-                                    <button className='bg-slate-200 p-2 ml-2'>Editar</button>
+                                    <button className='bg-red-500 p-2' onClick={() => handleDeleteProfessor(prof.id)}><Trash2 className='w-4 h-4'/></button>
+                                    <button className='bg-slate-200 p-2 ml-2'><Pencil className='w-4 h-4' /></button>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {prof.id}
