@@ -34,7 +34,7 @@ function transformaEmArray(obj) {
 
 const Professores = () => {
 
-    const { dados } = useContext(DadosContext);
+    const { dados, setDadosAux } = useContext(DadosContext);
 
     const [tabelaProfs, setTabelaProfs] = useState([{ id: 0, nome: 0, departamento: 0, disciplina: 0 }]);
     const [editingId, setEditingId] = useState(null);
@@ -52,8 +52,9 @@ const Professores = () => {
 
     //const tabela = transformaEmArray(dados.professores);
     function handleAddProfessor(event) {
-        event.preventDefault();
-        dados.addProfessor('Juliana Tedesca', 'Eng. Civil', 'Direito');
+        //event.preventDefault();
+        dados.addProfessor('-', '-', '-');
+        setDadosAux((prevVar) => prevVar + 1);
         setTabelaProfs(transformaEmArray(dados.professores));
         console.log('professor adicionado!');
     };
@@ -62,6 +63,7 @@ const Professores = () => {
         //event.preventDefault();
         //console.log(id)
         if (dados.removeProfessor(id)) {
+            setDadosAux((prevVar) => prevVar + 1);
             setTabelaProfs(transformaEmArray(dados.professores));
             console.log('professor removido com sucesso!')
             return;
@@ -69,6 +71,7 @@ const Professores = () => {
         console.log('erro ao deletar professor!');
     };
 
+    //  função pra trocar os botões de edit pra save e os campos pra input text
     function handleEditClick(user) {
         setEditingId(user.id);
         setEditFormData({
@@ -86,6 +89,7 @@ const Professores = () => {
         }));
     };
 
+    //  função pra salvar os novos dados da edição dos professores
     function handleSaveClick(prof) { 
         const newUsers = tabelaProfs.map(user => {
             if (user.id === prof.id) {
@@ -97,8 +101,10 @@ const Professores = () => {
                 };
             }
             return user;
-        });     
+        });  
+        //  adicionar checagem para casod e erro na edicao dos dados gerais   
         dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina);     // salva no objeto geral
+        setDadosAux((prevVar) => prevVar + 1);
         setTabelaProfs(newUsers);                                                                               // seta novo usuario no frontend
         setEditingId(null);                                                                                     // desativa o modo edição
     };
@@ -109,7 +115,7 @@ const Professores = () => {
         <div className='w-screen'>
 
             <div className='p-4 flex justify-center'>
-                <button className='bg-green-600 p-2' onClick={ev => handleAddProfessor(ev)}> Adicionar Professor</button>
+                <button className='bg-green-500 p-2 rounded' onClick={ev => handleAddProfessor(ev)}> Adicionar Professor</button>
             </div>
 
             <div>
@@ -203,7 +209,7 @@ const Professores = () => {
                     </tbody>
                 </table>
             </div>
-            
+
         </div>
     );
 };

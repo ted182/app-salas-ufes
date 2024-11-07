@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { House } from 'lucide-react';
 
-import AuthContext from '../contexts/auth';
+//  importação do contexto
+import DadosContext from '../contexts/dados';
 
 
 const horarios = [
@@ -31,6 +32,20 @@ const dias = [
     { value: 'domingo', label: 'Domingo' },
 ];
 
+function createProfessorSelect(obj) {
+
+    const arr = [];
+    const keys = Object.keys(obj);
+    const values = Object.values(obj);
+
+    values.forEach((k, idx) => {
+        if (idx) arr.push({ id: keys[idx], value: k.nome, label: k.nome })
+    });
+
+    //console.log(arr)
+
+    return arr;
+};
 
 
 const Header = () => {
@@ -38,13 +53,27 @@ const Header = () => {
     const classHeader = `w-screen h-auto bg-slate-500 flex p-4 gap-10`;
     const classButtonOptions = `rounded-lg p-2 bg-sky-500/50 hover:bg-sky-500/30 mt-3`;
 
-    const { user } = useContext(AuthContext);
+    const { dados, dadosAux, setDadosAux } = useContext(DadosContext);  
 
-    const [horarioInicio, setHorarioInicio] = useState(null);
-    //const [horarioTermino, setHorarioTermino] = useState(null);
-    const [diaSemana, setDiaSemana] = useState(null);
+    
+    //  filtros
+    const [filtroHorario, setFiltroHorario] = useState(null);
+    const [filtroDia, setFiltroDia] = useState(null);    
 
- 
+    //  reserva de sala
+    const [reservaHorario, setReservaHorario] = useState(null);
+    const [reservaDia, setReservaDia] = useState(null);
+    const [reservaProf, setReservaProf] = useState(null);
+    const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
+
+
+    
+    useEffect(() => {
+        if (!dados?.professores) return; // Retorna se não houver dados
+        setReservaDataProf( createProfessorSelect(dados.professores) );
+    }, [dadosAux]); 
+
+
 
     return (
         <header className={classHeader}>
@@ -53,16 +82,16 @@ const Header = () => {
                 <div className='mt-4'>
                     <Select
                         placeholder='Horário'
-                        value={horarioInicio}
-                        onChange={(ev) => { setHorarioInicio(ev.target) }}
+                        value={filtroHorario}
+                        onChange={(ev) => { setFiltroHorario(ev.target) }}
                         options={horarios}
                     />
                 </div>
                 <div className='mt-4'>
                     <Select
                         placeholder='Dia da Semana'
-                        value={diaSemana}
-                        onChange={(ev) => { setDiaSemana(ev.target) }}
+                        value={filtroDia}
+                        onChange={(ev) => { setFiltroDia(ev.target) }}
                         options={dias}
                     />
                 </div>
@@ -73,25 +102,25 @@ const Header = () => {
                 <div className='mt-4'>
                     <Select
                         placeholder='Horário'
-                        value={horarioInicio}
-                        onChange={(ev) => { setHorarioInicio(ev.target) }}
+                        value={reservaHorario}
+                        onChange={(ev) => { setReservaHorario(ev.target) }}
                         options={horarios}
                     />
                 </div>
                 <div className='mt-4'>
                     <Select
                         placeholder='Dia da Semana'
-                        value={diaSemana}
-                        onChange={(ev) => { setDiaSemana(ev.target) }}
+                        value={reservaDia}
+                        onChange={(ev) => { setReservaDia(ev.target) }}
                         options={dias}
                     />
                 </div>
                 <div className='mt-4'>
                     <Select
                         placeholder='Professor/Matéria'
-                        value={diaSemana}
-                        onChange={(ev) => { setDiaSemana(ev.target) }}
-                        options={dias}
+                        value={reservaProf}
+                        onChange={(ev) => { setReservaProf(ev.target) }}
+                        options={reservaDataProf}
                     />
                 </div>
                 <div className='flex flex-col'>

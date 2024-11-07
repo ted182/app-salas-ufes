@@ -165,13 +165,16 @@ export const DadosProvider = ({ children }) => {
         setDados(ag);
     }, []);
     
-    const [dados, setDados] = useState(null);           // <-- DADOS GERAIS
-    const [tabela, setTabela] = useState(null);         // <-- DADOS QUE SERÃO MOSTRADOS NA TABELA
+    const [dados, setDados] = useState(null);               // <-- DADOS GERAIS
+    const [dadosAux, setDadosAux] = useState(0);            // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
+    const [tabela, setTabela] = useState(null);             // <-- DADOS QUE SERÃO MOSTRADOS NA TABELA
 
     return (
         <DadosContext.Provider
             value={{
                 dados,
+                dadosAux,
+                setDadosAux,
                 tabela,
                 setTabela
             }}
