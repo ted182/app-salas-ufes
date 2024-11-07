@@ -44,6 +44,9 @@ const Professores = () => {
         disciplina: ''
     });
 
+    // variaveis de estilização da tabela
+    const [focusColor, setFocusColor] = useState(null);
+
     useEffect(() => {
         //console.log('rodou');
         if (!dados?.professores) return; // Retorna se não houver dados
@@ -73,7 +76,8 @@ const Professores = () => {
     };
 
     //  função pra trocar os botões de edit pra save e os campos pra input text
-    function handleEditClick(user) {
+    function handleEditClick(user, idRowTable) {
+        setFocusColor(idRowTable);
         setEditingId(user.id);
         setEditFormData({
             nome: user.nome,
@@ -91,7 +95,7 @@ const Professores = () => {
     };
 
     //  função pra salvar os novos dados da edição dos professores
-    function handleSaveClick(prof) { 
+    function handleSaveClick(prof) {
         const newUsers = tabelaProfs.map(user => {
             if (user.id === prof.id) {
                 return {
@@ -102,12 +106,13 @@ const Professores = () => {
                 };
             }
             return user;
-        });  
+        });
         //  adicionar checagem para casod e erro na edicao dos dados gerais   
         dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina);     // salva no objeto geral
         setDadosAux((prevVar) => prevVar + 1);
         setTabelaProfs(newUsers);                                                                               // seta novo usuario no frontend
         setEditingId(null);                                                                                     // desativa o modo edição
+        setFocusColor(null);
     };
 
 
@@ -135,7 +140,7 @@ const Professores = () => {
 
                         {tabelaProfs.map((prof, idp) => (
 
-                            <tr key={idp}>
+                            <tr key={idp} className={`${focusColor === idp ? 'bg-red-200' : ''} hover:bg-gray-100`}>
 
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <button className='bg-red-500 p-3' onClick={() => handleDeleteProfessor(prof.id)}>
@@ -152,7 +157,7 @@ const Professores = () => {
                                             </div>
                                         </button>
                                     ) : (
-                                        <button className='bg-slate-200 p-3 ml-2' onClick={() => handleEditClick(prof)}>
+                                        <button className='bg-slate-200 p-3 ml-2' onClick={() => handleEditClick(prof, idp)}>
                                             <div className='flex items-center'>
                                                 <div><Pencil className='w-4 h-4' /></div>
                                             </div>
