@@ -12,9 +12,6 @@ import Modal from '../components/Modal';
 
 
 
-
-
-
 function transformaEmArray(obj) {
 
     //console.log(obj)

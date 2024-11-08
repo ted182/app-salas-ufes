@@ -54,6 +54,85 @@ const TabelaSemana = ({ tabela }) => {
         setModal(true);
     };
 
+
+
+
+    return (
+        <div className="flex flex-col">
+
+            {/* Cabeçalho da Tabela */}
+            <div className="flex">
+                <div className="flex-1 p-2 border">Horário</div>
+                {diasDaSemana.map((dia, index) => (
+                    <div key={index} className="flex-1 p-2 border">{dia.value}</div>
+                ))}
+            </div>
+
+            {/* Conteúdo da Tabela */}
+            {horarios.map((horario, hi) => (
+                <div key={hi} className="flex">
+                    <div className="flex-1 p-2 border">{horario.value}</div>
+
+                    {diasDaSemana.map((dia, di) => (
+                        <div key={di} className="flex-1 p-2 border">
+
+                            {tabela ? (
+
+                                <button
+                                    className={`py-2 w-full h-full hover:outline-none hover:ring-2 hover:ring-black`}
+                                    style={{ backgroundColor: tabela.agenda[dia.id][horario.id].cor }}
+                                    onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
+                                    {tabela.agenda[dia.id][horario.id].disciplina}               
+                                </button>
+
+
+                            ) : ('-')
+                            }
+
+                        </div>
+                    ))}
+
+                </div>
+            ))}
+
+        </div>
+    );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -75,14 +154,14 @@ const TabelaSemana = ({ tabela }) => {
                                 {tabela ? (
 
                                     <button
-                                        className={`w-full h-full hover:bg-slate-200`}
+                                        className={`w-full h-full hover:outline-none hover:ring-2 hover:ring-black`}
                                         style={{ backgroundColor: tabela.agenda[dia.id][horario.id].cor }}
                                         onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
                                         {tabela.agenda[dia.id][horario.id].disciplina}
                                     </button>
 
 
-                                ) : ('sem tabela')
+                                ) : ('-')
                                 }
 
                             </td>

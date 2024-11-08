@@ -111,11 +111,24 @@ const Professores = () => {
             }
             return user;
         });
-        //  adicionar checagem para casod e erro na edicao dos dados gerais   
-        dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina, editFormData.cor);     // salva no objeto geral
+        
+        //  adicionar checagem para caso de erro na edicao dos dados gerais   
+
+        // salva no objeto geral
+        dados.setProfessor(
+            prof.id, 
+            editFormData.nome, 
+            editFormData.departamento, 
+            editFormData.disciplina, 
+            editFormData.cor
+        ); 
+
+        //setAgenda(salaId, diaSemana, horarioId, professorId)        
+        //dados.setAgenda();     
+        
         setDadosAux((prevVar) => prevVar + 1);
-        setTabelaProfs(newUsers);                                                                               // seta novo usuario no frontend
-        setEditingId(null);                                                                                     // desativa o modo edição
+        setTabelaProfs(newUsers);               // seta novo usuario no frontend
+        setEditingId(null);                     // desativa o modo edição
         setFocusColor(null);
     };
 
@@ -218,10 +231,10 @@ const Professores = () => {
                                             name="cor"
                                             value={editFormData.cor}
                                             onChange={handleEditFormChange}
-                                            className="h-6 w-8"
+                                            className="border-2 border-black h-6 w-6"
                                         />
                                     ) : (
-                                        <div className='h-6 w-6' style={{ backgroundColor: prof.cor }}></div>
+                                        <div className='border-2 border-black h-6 w-6' style={{ backgroundColor: prof.cor }}></div>
                                     )}
                                 </td>
 

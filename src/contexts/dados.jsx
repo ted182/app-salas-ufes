@@ -52,10 +52,10 @@ function agendaDaSemana() {
     //const cloneAgendaSemReferencia = JSON.parse(JSON.stringify( defaultAgenda() ));
 
     let salas = {
-        1: { nome: 'sala-101', predio: 'CT-1', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        2: { nome: 'sala-201', predio: 'CT-2', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        3: { nome: 'sala-301', predio: 'CT-3', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
-        4: { nome: 'sala-401', predio: 'CT-4', agenda: JSON.parse(JSON.stringify( defaultAgenda() )) },
+        1: { nome: 'sala-101', predio: 'CT-1', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        2: { nome: 'sala-201', predio: 'CT-2', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        3: { nome: 'sala-301', predio: 'CT-3', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        4: { nome: 'sala-401', predio: 'CT-4', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
     };
 
     //  gera agenda vazia
@@ -74,7 +74,7 @@ function agendaDaSemana() {
     };
 
     function setAgenda(salaId, diaSemana, horarioId, professorId) {
-        if (salas[salaId]) {    
+        if (salas[salaId]) {
             console.log(salaId, diaSemana, horarioId, professorId)
             salas[salaId].agenda[diaSemana][horarioId] = professores[professorId];
             return true;
@@ -94,6 +94,27 @@ function agendaDaSemana() {
         professores[teacherId] = { id: teacherId, cor: '', nome: name, departamento: depart, disciplina: subject };
     };
 
+    //  Função para atualizar os dados dos professores nas agendas das salas
+    function refreshAgenda(professor) {
+
+        const keys = Object.keys(salas);
+        //console.log(keys)
+        const dias = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'];
+        const horarios = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+        keys.forEach(key => {
+            dias.forEach(dia => {
+                horarios.forEach(hora => {
+                    //console.log(salas[key])
+                    if (professor.id == salas[key].agenda[dia][hora].id) {
+                        salas[key].agenda[dia][hora] = professor;
+                    };
+                })
+            });
+        })
+    };
+
+
     function setProfessor(professorId, name, depart, subject, cor) {
         professores[professorId] = {
             id: professorId,
@@ -102,6 +123,7 @@ function agendaDaSemana() {
             departamento: depart,
             disciplina: subject
         };
+        refreshAgenda(professores[professorId]);
     };
 
     function removeProfessor(id) {
@@ -121,7 +143,7 @@ function agendaDaSemana() {
         };
 
         const roomId = nextRoomId++;
-        salas[roomId] = { nome: roomName, predio: buildingName, agenda: JSON.parse(JSON.stringify( defaultAgenda() )) };
+        salas[roomId] = { nome: roomName, predio: buildingName, agenda: JSON.parse(JSON.stringify(defaultAgenda())) };
     };
 
     function setSala(roomId, name, building) {
@@ -177,12 +199,12 @@ console.log(teste.salas[1].agenda.domingo[horario]);
 
 
 export const DadosProvider = ({ children }) => {
-    
+
     useEffect(() => {
         const ag = agendaDaSemana();
         setDados(ag);
     }, []);
-    
+
     const [dados, setDados] = useState(null);                                       // <-- DADOS GERAIS
     const [dadosAux, setDadosAux] = useState(0);                                    // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
     const [modal, setModal] = useState(false);                                      // <-- MODAL PARA EDITAR DADOS DA TABELA
