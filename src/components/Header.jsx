@@ -48,15 +48,14 @@ function createProfessorSelect(obj) {
 
 const Header = () => {
 
-    const classHeader = `w-screen h-auto bg-slate-500 flex p-4 gap-10`;
     const classButtonOptions = `rounded-lg p-2 bg-sky-500/50 hover:bg-sky-500/30 mt-3`;
 
-    const { dados, dadosAux, setDadosAux } = useContext(DadosContext);  
+    const { dados, dadosAux, setDadosAux } = useContext(DadosContext);
 
-    
+
     //  filtros
     const [filtroHorario, setFiltroHorario] = useState(null);
-    const [filtroDia, setFiltroDia] = useState(null);    
+    const [filtroDia, setFiltroDia] = useState(null);
 
     //  reserva de sala
     const [reservaHorario, setReservaHorario] = useState(null);
@@ -65,71 +64,50 @@ const Header = () => {
     const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
 
 
-    
+
     useEffect(() => {
         //console.log('verificando select professores no header...')
         if (!dados?.professores) return; // Retorna se não houver dados
-        setReservaDataProf( createProfessorSelect(dados.professores) );
-    }, [dados, dadosAux]); 
+        setReservaDataProf(createProfessorSelect(dados.professores));
+    }, [dados, dadosAux]);
 
 
 
     return (
-        <header className={classHeader}>
-            <div className='flex flex-col'>
+        <header className='bg-slate-500 flex h-auto p-4 gap-10'>
+            <div className='flex flex-col w-screen'>
                 <div>FILTROS</div>
-                <div className='mt-4'>
-                    <Select
-                        placeholder='Horário'
-                        value={filtroHorario}
-                        onChange={(ev) => { setFiltroHorario(ev.target) }}
-                        options={horarios}
-                    />
-                </div>
-                <div className='mt-4'>
-                    <Select
-                        placeholder='Dia da Semana'
-                        value={filtroDia}
-                        onChange={(ev) => { setFiltroDia(ev.target) }}
-                        options={dias}
-                    />
-                </div>
-            </div>           
-
-            <div className='flex flex-col'>
-                <div className=''>RESERVA DE SALA</div>
-                <div className='mt-4'>
-                    <Select
-                        placeholder='Horário'
-                        value={reservaHorario}
-                        onChange={(ev) => { setReservaHorario(ev.target) }}
-                        options={horarios}
-                    />
-                </div>
-                <div className='mt-4'>
-                    <Select
-                        placeholder='Dia da Semana'
-                        value={reservaDia}
-                        onChange={(ev) => { setReservaDia(ev.target) }}
-                        options={dias}
-                    />
-                </div>
-                <div className='mt-4'>
-                    <Select
-                        placeholder='Professor/Matéria'
-                        value={reservaProf}
-                        onChange={(ev) => { setReservaProf(ev.target) }}
-                        options={reservaDataProf}
-                    />
-                </div>
-                <div className='flex flex-col'>
-                    <button className={classButtonOptions}>Reservar</button>
+                <div className='flex items-center gap-2'>
+                    <div className='mt-4'>
+                        <Select
+                            placeholder='Horário'
+                            value={filtroHorario}
+                            onChange={(ev) => { setFiltroHorario(ev.target) }}
+                            options={horarios}
+                            className='w-auto'
+                        />
+                    </div>
+                    <div className='mt-4'>
+                        <Select
+                            placeholder='Dia da Semana'
+                            value={filtroDia}
+                            onChange={(ev) => { setFiltroDia(ev.target) }}
+                            options={dias}
+                            className='w-auto'
+                        />
+                    </div>
+                    <div className='mt-4'>
+                        <button className='p-2 bg-slate-300 rounded'>Aplicar</button>
+                    </div>
+                    <div className='mt-4'>
+                        <button className='p-2 bg-slate-300 rounded'>Remover</button>
+                    </div>
                 </div>
             </div>
 
-            <div className='flex flex-col'>
-                <div className=''>OPÇÕES</div>
-                <div className='flex flex-col'>
+            <div className='flex flex-col w-screen'>
+                <div className='flex justify-end'>NAVEGAÇÃO</div>
+                <div className='flex justify-end gap-2'>
                     <Link to='/'><button className={classButtonOptions}>Home</button></Link>
                     <Link to='/professores'><button className={classButtonOptions}>Cadastro de Professores</button></Link>
                     <Link to='/salas'><button className={classButtonOptions}>Cadastro de Salas</button></Link>

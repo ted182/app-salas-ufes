@@ -30,10 +30,13 @@ const Home = () => {
     const { dados, setModalData } = useContext(DadosContext);
 
     const [tabela, setTabela] = useState(null);
-    const [salas, setSalas] = useState([{ id: 0, nome: 0, predio: 0 }]);
+    const [salas, setSalas] = useState([{ id: 0, nome: '-', predio: '-' }]);
 
     // variaveis de estilização dos botões das salas
     const [pressedColor, setPressedColor] = useState(null);
+
+    //   variáveis do filtro das salas
+    const [filterText, setFilterText] = useState('');
 
 
 
@@ -49,23 +52,36 @@ const Home = () => {
         //dados.setAgenda(id, 'quarta', 5, 2);
         //console.log(dados.salas[id])
         setTabela(dados.salas[id]);
-        setModalData( {idSala: id, idDia: 0, idHorario: 0 , idProfessor: 0} );
+        setModalData({ idSala: id, idDia: 0, idHorario: 0, idProfessor: 0 });
         setPressedColor(id);
     };
 
-    
+
+    const filteredData = salas.filter(
+        (item) =>
+            item.nome.toLowerCase().includes(filterText.toLowerCase()) ||
+            item.predio.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+
     return (
         <>
             <Modal />
             <div>
-                <div>SALAS</div>
-                <div>
-                    {salas.map(sala => (
-                        <button 
-                            key={sala.id} 
-                            className={`p-4 ml-4 ${pressedColor === sala.id ? 'bg-red-200' : 'bg-sky-500/50'} hover:outline-none hover:ring-2 hover:ring-black`} 
+                <div className='mt-4 flex justify-center'>
+                    <input
+                        type='text'
+                        onChange={(e) => setFilterText(e.target.value)}
+                        placeholder='Digite a sala para filtrar'
+                        className='bg-slate-200 p-2 rounded-md text-center' />
+                </div>
+                <div className=''>
+                    {filteredData.map(sala => (
+                        <button
+                            key={sala.id}
+                            className={`p-4 ml-4 mt-4 ${pressedColor === sala.id ? 'bg-red-200' : 'bg-sky-500/50'} hover:outline-none hover:ring-2 hover:ring-black`}
                             onClick={() => handleClick(sala.id)}>
-                            
+
                             <div className='flex flex-col'>
                                 <span>{sala.nome}</span>
                                 <span>{sala.predio}</span>
