@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Pencil, Trash2, Save } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 //  importação do contexto
 import DadosContext from '../contexts/dados';
@@ -12,7 +11,8 @@ const cabecalho = [
     { id: 0, value: 'ID' },
     { id: 1, value: 'Nome' },
     { id: 2, value: 'Departamento' },
-    { id: 3, value: 'Matéria' }
+    { id: 3, value: 'Matéria' },
+    { id: 4, value: 'Cor' }
 ];
 
 function transformaEmArray(obj) {
@@ -36,16 +36,18 @@ const Professores = () => {
 
     const { dados, dadosAux, setDadosAux } = useContext(DadosContext);
 
-    const [tabelaProfs, setTabelaProfs] = useState([{ id: 0, nome: 0, departamento: 0, disciplina: 0 }]);
+    const [tabelaProfs, setTabelaProfs] = useState([{ id: 0, cor: 0, nome: 0, departamento: 0, disciplina: 0 }]);
     const [editingId, setEditingId] = useState(null);
     const [editFormData, setEditFormData] = useState({
         nome: '',
         departamento: '',
-        disciplina: ''
+        disciplina: '',
+        cor: ''
     });
 
     // variaveis de estilização da tabela
     const [focusColor, setFocusColor] = useState(null);
+    //const [corMaterias, setcorMaterias] = useState('#fff');
 
     useEffect(() => {
         //console.log('rodou');
@@ -56,7 +58,7 @@ const Professores = () => {
     //const tabela = transformaEmArray(dados.professores);
     function handleAddProfessor(event) {
         //event.preventDefault();
-        dados.addProfessor('-', '-', '-');
+        dados.addProfessor('-', '-', '-', '-');
         setDadosAux((prevVar) => prevVar + 1);
         setTabelaProfs(transformaEmArray(dados.professores));
         console.log('professor adicionado!');
@@ -81,6 +83,7 @@ const Professores = () => {
         setEditingId(user.id);
         setEditFormData({
             nome: user.nome,
+            cor: user.cor,
             departamento: user.departamento,
             disciplina: user.disciplina
         });
@@ -101,6 +104,7 @@ const Professores = () => {
                 return {
                     ...user,
                     nome: editFormData.nome,
+                    cor: editFormData.cor,
                     departamento: editFormData.departamento,
                     disciplina: editFormData.disciplina
                 };
@@ -108,7 +112,7 @@ const Professores = () => {
             return user;
         });
         //  adicionar checagem para casod e erro na edicao dos dados gerais   
-        dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina);     // salva no objeto geral
+        dados.setProfessor(prof.id, editFormData.nome, editFormData.departamento, editFormData.disciplina, editFormData.cor);     // salva no objeto geral
         setDadosAux((prevVar) => prevVar + 1);
         setTabelaProfs(newUsers);                                                                               // seta novo usuario no frontend
         setEditingId(null);                                                                                     // desativa o modo edição
@@ -205,6 +209,19 @@ const Professores = () => {
                                         />
                                     ) : (
                                         prof.disciplina
+                                    )}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    {editingId === prof.id ? (
+                                        <input
+                                            type="color"
+                                            name="cor"
+                                            value={editFormData.cor}
+                                            onChange={handleEditFormChange}
+                                            className="h-6 w-8"
+                                        />
+                                    ) : (
+                                        <div className='h-6 w-6' style={{ backgroundColor: prof.cor }}></div>
                                     )}
                                 </td>
 

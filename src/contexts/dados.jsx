@@ -28,18 +28,21 @@ function agendaDaSemana() {
     let professores = {
         0: {
             id: 0,
+            cor: '#fff',
             nome: 'Horario Vago',
             departamento: 'Horario Vago',
             disciplina: 'Horario Vago'
         },
         1: {
             id: 1,
+            cor: '#fff',
             nome: 'João',
             departamento: 'Matemática',
             disciplina: 'Cálculo I'
         },
         2: {
             id: 2,
+            cor: '#fff',
             nome: 'Pedro',
             departamento: 'Física',
             disciplina: 'Física Básica I'
@@ -88,12 +91,13 @@ function agendaDaSemana() {
         };
 
         const teacherId = nextTeacherId++;
-        professores[teacherId] = { id: teacherId, nome: name, departamento: depart, disciplina: subject };
+        professores[teacherId] = { id: teacherId, cor: '', nome: name, departamento: depart, disciplina: subject };
     };
 
-    function setProfessor(professorId, name, depart, subject) {
+    function setProfessor(professorId, name, depart, subject, cor) {
         professores[professorId] = {
             id: professorId,
+            cor: cor,
             nome: name,
             departamento: depart,
             disciplina: subject
