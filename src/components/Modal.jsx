@@ -65,6 +65,7 @@ const Modal = () => {
     const [dia, setDia] = useState('-');
     const [horario, setHorario] = useState('-');
     const [disciplina, setDisciplina] = useState('-');
+    const [sala, setSala] = useState('-');
     
 
 
@@ -86,6 +87,7 @@ const Modal = () => {
         setDia( findValue(diasDaSemana, modalData.idDia) );
         setHorario( findValue(horarios, modalData.idHorario) );
         setDisciplina( dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina );
+        setSala( dados.salas[modalData.idSala] );
 
     }, [dados, dadosAux, modalData]);
 
@@ -93,6 +95,7 @@ const Modal = () => {
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
+        if (!reservaProf) return;
         // Handle form submission logic here
         //console.log(`First Name: ${firstName}, Last Name: ${lastName}`);    
         //console.log('valor do select model: ', reservaProf)     
@@ -124,9 +127,10 @@ const Modal = () => {
                     </button>
                 </div>
                 <dir className='p-0'>
-                    <p>Dia da semana: {dia}</p>
-                    <p>Horário: {horario}</p>
-                    <p>Matéria agendada: {disciplina}</p>
+                    <p><span className='font-bold'>Dia da semana: </span>{dia}</p>
+                    <p><span className='font-bold'>Horário: </span>{horario}</p>
+                    <p><span className='font-bold'>Matéria agendada: </span>{disciplina}</p>
+                    <p><span className='font-bold'>Sala: </span>{sala.nome} ({sala.predio})</p>
                     <div className={`p-2 mt-2 text-center text-white ${disciplina != 'Horario Vago' ? 'bg-red-600' : ''} ''`}>
                         <p className='font-bold'>ATENÇÃO!</p>
                         <p>Ja existe matéria agendada no horário selecionado</p>
