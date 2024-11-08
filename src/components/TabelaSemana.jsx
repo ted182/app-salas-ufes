@@ -68,14 +68,15 @@ const TabelaSemana = ({ tabela }) => {
 
                 {horarios.map((horario, index) => (
                     <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap">{horario.value}</td>
+                        <td className=" whitespace-nowrap">{horario.value}</td>
                         {diasDaSemana.map((dia, idx) => (
                             <td key={idx} className="px-6 py-4 whitespace-nowrap">
 
                                 {tabela ? (
 
                                     <button
-                                        className='w-full h-full hover:bg-slate-200'
+                                        className={`w-full h-full hover:bg-slate-200`}
+                                        style={{ backgroundColor: tabela.agenda[dia.id][horario.id].cor }}
                                         onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
                                         {tabela.agenda[dia.id][horario.id].disciplina}
                                     </button>
