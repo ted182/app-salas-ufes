@@ -18,13 +18,17 @@ const cabecalho = [
 function transformaEmArray(obj) {
 
     const arr = [];
-    const keys = Object.keys(obj);
+    //const keys = Object.keys(obj);
     const values = Object.values(obj);
 
     //console.log(values)
-
+    /*
     values.forEach((k, idx) => {
         if (idx) arr.push({ id: keys[idx], ...k })
+    });
+    */
+    values.forEach((k, idx) => {
+        if (idx) arr.push({ ...k })
     });
 
     return arr;

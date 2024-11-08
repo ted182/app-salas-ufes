@@ -14,18 +14,11 @@ const cabecalho = [
 ];
 
 function transformaEmArray(obj) {
-
-    //console.log(obj)
     const arr = [];
-    const keys = Object.keys(obj);
     const values = Object.values(obj);
-
-    //console.log(values)
-
-    values.forEach((k, idx) => {
-        arr.push({ id: keys[idx], ...k })
+    values.forEach(k => {
+        arr.push({ ...k })
     });
-
     return arr;
 };
 

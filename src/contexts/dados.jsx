@@ -52,10 +52,10 @@ function agendaDaSemana() {
     //const cloneAgendaSemReferencia = JSON.parse(JSON.stringify( defaultAgenda() ));
 
     let salas = {
-        1: { nome: 'sala-101', predio: 'CT-1', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
-        2: { nome: 'sala-201', predio: 'CT-2', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
-        3: { nome: 'sala-301', predio: 'CT-3', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
-        4: { nome: 'sala-401', predio: 'CT-4', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        1: { id: 1, nome: 'sala-101', predio: 'CT-1', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        2: { id: 2, nome: 'sala-201', predio: 'CT-2', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        3: { id: 3, nome: 'sala-301', predio: 'CT-3', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
+        4: { id: 4, nome: 'sala-401', predio: 'CT-4', agenda: JSON.parse(JSON.stringify(defaultAgenda())) },
     };
 
     //  gera agenda vazia
@@ -143,11 +143,12 @@ function agendaDaSemana() {
         };
 
         const roomId = nextRoomId++;
-        salas[roomId] = { nome: roomName, predio: buildingName, agenda: JSON.parse(JSON.stringify(defaultAgenda())) };
+        salas[roomId] = { id: roomId, nome: roomName, predio: buildingName, agenda: JSON.parse(JSON.stringify(defaultAgenda())) };
     };
 
     function setSala(roomId, name, building) {
         salas[roomId] = {
+            id: roomId,
             nome: name,
             predio: building,
             agenda: salas[roomId].agenda,
@@ -209,6 +210,10 @@ export const DadosProvider = ({ children }) => {
     const [dadosAux, setDadosAux] = useState(0);                                    // <-- VARIAVEL PARA AUXILIAR A DETEC'~AO DE MUDANÇAS NOS DADOS GERAIS
     const [modal, setModal] = useState(false);                                      // <-- MODAL PARA EDITAR DADOS DA TABELA
     const [modalData, setModalData] = useState(false);                              // <-- DADOS QUE SERÃO PASSADOS PARA O MODAL
+    const [filtro, setFiltro] = useState(false);                                    // <-- INDICADOR SE O FILTRO ESTÁ ATIVADO
+    const [filtroHorario, setFiltroHorario] = useState(null);
+    const [filtroDia, setFiltroDia] = useState(null);
+
 
     return (
         <DadosContext.Provider
@@ -219,7 +224,13 @@ export const DadosProvider = ({ children }) => {
                 modal,
                 setModal,
                 modalData,
-                setModalData
+                setModalData,
+                filtro,
+                setFiltro,
+                filtroHorario,
+                setFiltroHorario,
+                filtroDia,
+                setFiltroDia
             }}
         >
             {children}
