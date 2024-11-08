@@ -49,12 +49,13 @@ function createProfessorSelect(obj) {
 
 const Header = () => {
 
-    const classButtonOptions = `rounded-lg p-2 bg-sky-500/50 hover:bg-sky-500/30 mt-3`;
+    const classButtonOptions = `rounded-lg p-2 mt-3 bg-slate-300 hover:bg-sky-500/30 shadow-md`;
 
     const {
         dados,
         dadosAux,
         setDadosAux,
+        filtro,
         setFiltro,
         filtroHorario,
         setFiltroHorario,
@@ -78,10 +79,14 @@ const Header = () => {
     }, [dados, dadosAux]);
     */
 
+    function handleFiltro(estado) {
+        setFiltro(estado);
+    };
+
 
     return (
-        <header className='bg-slate-500 flex h-auto p-4 gap-10'>
-            <div className='flex flex-col w-screen bg-slate-50/50 rounded-lg p-4'>
+        <header className='bg-slate-500 flex flex-col md:flex-row h-auto p-4 gap-10'>
+            <div className='w-full md:w-1/2 bg-slate-50/50 rounded-lg p-4'>
                 <div className='flex justify-center font-bold'>FILTROS</div>
                 <div className='flex items-center justify-center gap-2'>
                     <div className='mt-4'>
@@ -91,6 +96,7 @@ const Header = () => {
                             onChange={(ev) => { setFiltroHorario(ev) }}
                             options={horarios}
                             className='w-auto'
+                            isDisabled={filtro}
                         />
                     </div>
                     <div className='mt-4'>
@@ -100,12 +106,13 @@ const Header = () => {
                             onChange={(ev) => { setFiltroDia(ev) }}
                             options={dias}
                             className='w-auto'
+                            isDisabled={filtro}
                         />
                     </div>
                     <div className='mt-4'>
                         <button
                             className='p-2 bg-slate-300 rounded'
-                            onClick={() => setFiltro(true)}
+                            onClick={() => handleFiltro(true)}
                         >
                             Aplicar
                         </button>
@@ -113,14 +120,14 @@ const Header = () => {
                     <div className='mt-4'>
                         <button
                             className='p-2 bg-slate-300 rounded'
-                            onClick={() => setFiltro(false)}
+                            onClick={() => handleFiltro(false)}
                         >
                             Remover</button>
                     </div>
                 </div>
             </div>
 
-            <div className='flex flex-col w-screen bg-slate-50/50 rounded-lg p-4'>
+            <div className='w-full md:w-1/2 bg-slate-50/50 rounded-lg p-4'>
                 <div className='flex justify-center font-bold'>NAVEGAÇÃO</div>
                 <div className='flex justify-center gap-2'>
                     <Link to='/'><button className={classButtonOptions}>Home</button></Link>

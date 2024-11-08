@@ -211,8 +211,8 @@ export const DadosProvider = ({ children }) => {
     const [modal, setModal] = useState(false);                                      // <-- MODAL PARA EDITAR DADOS DA TABELA
     const [modalData, setModalData] = useState(false);                              // <-- DADOS QUE SERÃO PASSADOS PARA O MODAL
     const [filtro, setFiltro] = useState(false);                                    // <-- INDICADOR SE O FILTRO ESTÁ ATIVADO
-    const [filtroHorario, setFiltroHorario] = useState(null);
-    const [filtroDia, setFiltroDia] = useState(null);
+    const [filtroHorario, setFiltroHorario] = useState([{ value: 0, label: 'Vazio' }]);
+    const [filtroDia, setFiltroDia] = useState([{ value: 0, label: 'Vazio' }]);
 
 
     return (

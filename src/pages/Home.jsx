@@ -97,12 +97,15 @@ const Home = () => {
     //   variáveis do filtro das salas
     const [filterText, setFilterText] = useState('');
 
-
+    
+    
 
     useEffect(() => {
         //console.log('rodou');
         if (!dados?.salas) return; // Retorna se não houver dados
         //console.log('pegou os dados');
+        setPressedColor(null);
+        setTabela(null);
         if (filtro) {
             //console.log('detectou filtro?')
             setSalas( buscarHorario(dados, filtroHorario.value, filtroDia.value) );
@@ -120,12 +123,14 @@ const Home = () => {
         setPressedColor(id);
     };
 
-
     const filteredData = salas.filter(
         (item) =>
             item.nome.toLowerCase().includes(filterText.toLowerCase()) ||
             item.predio.toLowerCase().includes(filterText.toLowerCase())
     );
+
+
+    
 
 
     return (
