@@ -49,8 +49,8 @@ const Home = () => {
 
 
     const handleClick = (id) => {
-        dados.setAgenda(id, 'quarta', 5, 2);
-        //console.log(dados.salas[id])
+        //dados.setAgenda(id, 'quarta', 5, 2);
+        console.log(dados.salas[id])
         setTabela(dados.salas[id]);
         setModalData( {idSala: id, idDia: 0, idHorario: 0 , idProfessor: 0} );
         setPressedColor(id);

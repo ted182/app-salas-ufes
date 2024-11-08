@@ -11,7 +11,7 @@ const Footer = () => {
     const classHeader = `w-screen h-auto bg-slate-500 flex items-center justify-center gap-2 fixed bottom-0`;
 
     return (
-        <footer className={classHeader}>
+        <footer className='bg-slate-500 p-10'>
             <p>FOOTER</p>
         </footer>
     );

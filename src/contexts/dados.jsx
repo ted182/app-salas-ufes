@@ -124,6 +124,7 @@ function agendaDaSemana() {
         salas[roomId] = {
             nome: name,
             predio: building,
+            agenda: salas[roomId].agenda,
         };
     };
 

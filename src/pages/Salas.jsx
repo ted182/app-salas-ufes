@@ -60,7 +60,7 @@ const Salas = () => {
         //event.preventDefault();
         dados.addSala('-', '-');
         setDadosAux((prevVar) => prevVar + 1);
-        setTabelaRooms(transformaEmArray(dados.salas));
+        setTabelaRooms( transformaEmArray(dados.salas) );
         console.log('sala adicionada com sucesso!')
     };
 
