@@ -25,6 +25,7 @@ function transformaEmArray(obj) {
     return arr;
 };
 
+
 const Home = () => {
 
     const { dados, setModalData } = useContext(DadosContext);
@@ -72,7 +73,7 @@ const Home = () => {
                     <input
                         type='text'
                         onChange={(e) => setFilterText(e.target.value)}
-                        placeholder='Digite a sala para filtrar'
+                        placeholder='Qual sala/prédio procura?'
                         className='bg-slate-200 p-2 rounded-md text-center' />
                 </div>
                 <div className=''>

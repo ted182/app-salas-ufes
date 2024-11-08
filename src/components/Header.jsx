@@ -8,6 +8,7 @@ import DadosContext from '../contexts/dados';
 
 
 const horarios = [
+    { value: 0, label: 'Vazio' },
     { value: '1', label: '7:00' },
     { value: '2', label: '8:00' },
     { value: '3', label: '9:00' },
@@ -23,6 +24,7 @@ const horarios = [
 ];
 
 const dias = [
+    { value: 0, label: 'Vazio' },
     { value: 'segunda', label: 'Segunda' },
     { value: 'terca', label: 'Terça' },
     { value: 'quarta', label: 'Quarta' },
@@ -45,6 +47,58 @@ function createProfessorSelect(obj) {
     return arr;
 };
 
+function buscarHorario(dados, filtroHora, filtroDia) {
+    //console.log(dados.salas)
+    //console.log(filtroHora)
+    //console.log(filtroDia)
+    const keys = Object.keys(dados.salas);
+    //console.log(keys)
+    const dias = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'];
+    const horarios = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const vistos = new Set();
+
+    let arr = [];
+    let res = [];
+
+    if (!filtroDia && !filtroHora ) return dados;
+
+    if (filtroDia && filtroHora ) {
+        //console.log('entrou as 2 condicoes')
+        keys.forEach(key => {
+            if (dados.salas[key].agenda[filtroDia][filtroHora].nome == 'Horário Vago') arr.push(dados.salas[key]);
+        });
+    } else if (!filtroDia && filtroHora) {
+        //console.log('entrou filtro hora')
+        keys.forEach(key => {
+            dias.forEach(dia => {
+                if (dados.salas[key].agenda[dia][filtroHora].nome == 'Horário Vago') arr.push(dados.salas[key]);
+            });
+        });
+    } else {
+        //console.log('entrou filtro dia')
+        keys.forEach(key => {
+            horarios.forEach(hora => {
+                if (dados.salas[key].agenda[filtroDia][hora].nome == 'Horário Vago') arr.push(dados.salas[key]);
+            });
+        });
+    };  
+    // filtrar valores repetidos
+    res = arr.filter(obj => {
+        const valor = obj['nome'];
+        if (vistos.has(valor)) {
+            return false;
+        } else {
+            vistos.add(valor);
+            return true;
+        };
+    });
+
+    //console.log(res)
+
+    return res;
+};
+
+
 
 const Header = () => {
 
@@ -57,20 +111,17 @@ const Header = () => {
     const [filtroHorario, setFiltroHorario] = useState(null);
     const [filtroDia, setFiltroDia] = useState(null);
 
-    //  reserva de sala
-    const [reservaHorario, setReservaHorario] = useState(null);
-    const [reservaDia, setReservaDia] = useState(null);
-    const [reservaProf, setReservaProf] = useState(null);
-    const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
+    //  reserva de sala   
+    //const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
 
 
-
+    /*
     useEffect(() => {
         //console.log('verificando select professores no header...')
         if (!dados?.professores) return; // Retorna se não houver dados
         setReservaDataProf(createProfessorSelect(dados.professores));
     }, [dados, dadosAux]);
-
+    */
 
 
     return (
@@ -82,7 +133,7 @@ const Header = () => {
                         <Select
                             placeholder='Horário'
                             value={filtroHorario}
-                            onChange={(ev) => { setFiltroHorario(ev.target) }}
+                            onChange={(ev) => { setFiltroHorario(ev) }}
                             options={horarios}
                             className='w-auto'
                         />
@@ -91,13 +142,18 @@ const Header = () => {
                         <Select
                             placeholder='Dia da Semana'
                             value={filtroDia}
-                            onChange={(ev) => { setFiltroDia(ev.target) }}
+                            onChange={(ev) => { setFiltroDia(ev) }}
                             options={dias}
                             className='w-auto'
                         />
                     </div>
                     <div className='mt-4'>
-                        <button className='p-2 bg-slate-300 rounded'>Aplicar</button>
+                        <button
+                            className='p-2 bg-slate-300 rounded'
+                            onClick={() => buscarHorario(dados, filtroHorario.value, filtroDia.value)}
+                        >
+                            Aplicar
+                        </button>
                     </div>
                     <div className='mt-4'>
                         <button className='p-2 bg-slate-300 rounded'>Remover</button>

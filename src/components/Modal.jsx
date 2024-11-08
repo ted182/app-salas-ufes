@@ -131,7 +131,7 @@ const Modal = () => {
                     <p><span className='font-bold'>Horário: </span>{horario}</p>
                     <p><span className='font-bold'>Matéria agendada: </span>{disciplina}</p>
                     <p><span className='font-bold'>Sala: </span>{sala.nome} ({sala.predio})</p>
-                    <div className={`p-2 mt-2 text-center text-white ${disciplina != 'Horario Vago' ? 'bg-red-600' : ''} ''`}>
+                    <div className={`p-2 mt-2 text-center text-white ${disciplina != 'Horário Vago' ? 'bg-red-600' : ''} ''`}>
                         <p className='font-bold'>ATENÇÃO!</p>
                         <p>Ja existe matéria agendada no horário selecionado</p>
                     </div>

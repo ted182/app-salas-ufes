@@ -29,9 +29,9 @@ function agendaDaSemana() {
         0: {
             id: 0,
             cor: '#fff',
-            nome: 'Horario Vago',
-            departamento: 'Horario Vago',
-            disciplina: 'Horario Vago'
+            nome: 'Horário Vago',
+            departamento: 'Horário Vago',
+            disciplina: 'Horário Vago'
         },
         1: {
             id: 1,
