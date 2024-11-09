@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Select from 'react-select';
-import { Save } from 'lucide-react';
+import { Save, Trash2 } from 'lucide-react';
 
 //  importação do contexto
 import DadosContext from '../contexts/dados';
@@ -60,17 +60,17 @@ const Modal = () => {
     //const [isOpen, setModal] = useState(false);
     const [reservaProf, setReservaProf] = useState(null);
     const [reservaDataProf, setReservaDataProf] = useState([{ value: 'vazio', label: 'vazio' }]);
-    
+
     //  variaveis que vão preencher os dados do modal
     const [dia, setDia] = useState('-');
     const [horario, setHorario] = useState('-');
     const [disciplina, setDisciplina] = useState('-');
     const [sala, setSala] = useState('-');
-    
+
 
 
     useEffect(() => {
-        
+
         if (!dados?.professores) return; // Retorna se não houver dados
         if (!modalData.idDia) return;
 
@@ -84,14 +84,14 @@ const Modal = () => {
 
         //console.log(dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina)
 
-        setDia( findValue(diasDaSemana, modalData.idDia) );
-        setHorario( findValue(horarios, modalData.idHorario) );
-        setDisciplina( dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina );
-        setSala( dados.salas[modalData.idSala] );
+        setDia(findValue(diasDaSemana, modalData.idDia));
+        setHorario(findValue(horarios, modalData.idHorario));
+        setDisciplina(dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario].disciplina);
+        setSala(dados.salas[modalData.idSala]);
 
     }, [dados, dadosAux, modalData]);
 
-    
+
 
     const handleSubmit = (ev) => {
         ev.preventDefault();
@@ -100,13 +100,26 @@ const Modal = () => {
         //console.log(`First Name: ${firstName}, Last Name: ${lastName}`);    
         //console.log('valor do select model: ', reservaProf)     
 
-        if ( dados.setAgenda(modalData.idSala, modalData.idDia, modalData.idHorario, reservaProf.id) ) {
+        if (dados.setAgenda(modalData.idSala, modalData.idDia, modalData.idHorario, reservaProf.id)) {
             setDadosAux((prevVar) => prevVar + 1);
-            console.log('tabela atualizada!');            
+            console.log('tabela atualizada!');
         } else {
-            console.log('erro ao salvar dados!'); 
+            console.log('erro ao salvar dados!');
         };
         //console.log(dados.salas[modalData.idSala].agenda[modalData.idDia][modalData.idHorario])
+        setModal(false);
+    };
+
+    const handleDelete = (ev) => {
+        ev.preventDefault();
+
+        if (dados.setAgenda(modalData.idSala, modalData.idDia, modalData.idHorario, 0)) {
+            setDadosAux((prevVar) => prevVar + 1);
+            console.log('tabela atualizada!');
+        } else {
+            console.log('erro ao salvar dados!');
+        };
+
         setModal(false);
     };
 
@@ -149,24 +162,39 @@ const Modal = () => {
                             options={reservaDataProf}
                         />
                     </div>
-
-                    <div className="flex justify-end space-x-2 mt-4">
-                        <button
-                            type="button"
-                            onClick={() => setModal(false)}
-                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                        >
-                            <div className='flex items-center'>
-                                <div><Save className='w-4 h-4' /></div>
-                                <div className='ml-2'>Salvar</div>
-                            </div>
-                        </button>
+                    <div className="flex justify-between space-x-2 mt-4">
+                        <div className='flex space-x-2'>
+                            {disciplina != 'Horário Vago' && (
+                                <button
+                                    type="button"
+                                    onClick={handleDelete}
+                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                                >
+                                    <div className='flex items-center'>
+                                        <div><Trash2 className='w-4 h-4' /></div>
+                                        <div className='ml-2'>Deletar</div>
+                                    </div>
+                                </button>
+                            )}
+                        </div>
+                        <div className='flex space-x-2'>
+                            <button
+                                type="button"
+                                onClick={() => setModal(false)}
+                                className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                                <div className='flex items-center'>
+                                    <div><Save className='w-4 h-4' /></div>
+                                    <div className='ml-2'>Salvar</div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

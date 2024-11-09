@@ -61,7 +61,7 @@ const TabelaSemana = ({ tabela }) => {
         <div className="flex flex-col">
 
             {/* Cabeçalho da Tabela */}
-            <div className="flex">
+            <div className="flex text-center bg-slate-100">
                 <div className="flex-1 p-2 border">Horário</div>
                 {diasDaSemana.map((dia, index) => (
                     <div key={index} className="flex-1 p-2 border">{dia.value}</div>
@@ -70,8 +70,8 @@ const TabelaSemana = ({ tabela }) => {
 
             {/* Conteúdo da Tabela */}
             {horarios.map((horario, hi) => (
-                <div key={hi} className="flex">
-                    <div className="flex-1 p-2 border">{horario.value}</div>
+                <div key={hi} className="flex text-center">
+                    <div className="flex-1 p-2 border bg-slate-100">{horario.value}</div>
 
                     {diasDaSemana.map((dia, di) => (
                         <div key={di} className="flex-1 p-2 border">
