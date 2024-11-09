@@ -62,27 +62,29 @@ const TabelaSemana = ({ tabela }) => {
 
             {/* Cabeçalho da Tabela */}
             <div className="flex text-center bg-slate-100">
-                <div className="flex-1 p-2 border">Horário</div>
+                <div className="flex-1 border">Horário</div>
                 {diasDaSemana.map((dia, index) => (
-                    <div key={index} className="flex-1 p-2 border">{dia.value}</div>
+                    <div key={index} className="flex-1 border">{dia.value}</div>
                 ))}
             </div>
 
             {/* Conteúdo da Tabela */}
             {horarios.map((horario, hi) => (
-                <div key={hi} className="flex text-center">
-                    <div className="flex-1 p-2 border bg-slate-100">{horario.value}</div>
+                <div key={hi} className="flex">
+                    <div className="flex-1 border bg-slate-100 flex items-center justify-center">
+                        <span>{horario.value}</span>
+                    </div>
 
                     {diasDaSemana.map((dia, di) => (
-                        <div key={di} className="flex-1 p-2 border">
+                        <div key={di} className="flex-1 border flex items-center justify-center">
 
                             {tabela ? (
 
                                 <button
-                                    className={`py-2 w-full h-full hover:outline-none hover:ring-2 hover:ring-black`}
+                                    className={`p-2 w-full h-full border-2 border-transparent hover:border-black`}
                                     style={{ backgroundColor: tabela.agenda[dia.id][horario.id].cor }}
                                     onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
-                                    {tabela.agenda[dia.id][horario.id].disciplina}               
+                                    {tabela.agenda[dia.id][horario.id].disciplina}
                                 </button>
 
 
