@@ -12,6 +12,7 @@
     "start": "npm run nodepath && npm run dev"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "firebase": "^11.0.1",
     "lucide-react": "^0.447.0",
     "react": "^18.3.1",
