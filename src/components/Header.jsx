@@ -87,7 +87,7 @@ const Header = () => {
     return (
         <header className='bg-slate-500 flex flex-col md:flex-row h-auto p-4 gap-10'>
             <div className='w-full md:w-1/2 bg-slate-50/50 rounded-lg p-4'>
-                <div className='flex justify-center font-bold'>FILTROS</div>
+                <div className='flex justify-center font-bold'>FILTROS DAS SALAS</div>
                 <div className='flex items-center justify-center gap-2'>
                     <div className='mt-4'>
                         <Select

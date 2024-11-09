@@ -84,7 +84,16 @@ const TabelaSemana = ({ tabela }) => {
                                     className={`p-2 w-full h-full border-2 border-transparent hover:border-black`}
                                     style={{ backgroundColor: tabela.agenda[dia.id][horario.id].cor }}
                                     onClick={() => handleModal(dia, horario, tabela.agenda[dia.id][horario.id])}>
-                                    {tabela.agenda[dia.id][horario.id].disciplina}
+                                    <div className='flex flex-col'>
+                                        {tabela.agenda[dia.id][horario.id].id == 0 ? (
+                                            <span>{tabela.agenda[dia.id][horario.id].nome}</span>
+                                        ) : (
+                                            <>
+                                                <span className='font-bold'>{tabela.agenda[dia.id][horario.id].disciplina}</span>
+                                                <span >{tabela.agenda[dia.id][horario.id].nome}</span>
+                                            </>
+                                        )}
+                                    </div>
                                 </button>
 
 
