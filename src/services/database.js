@@ -142,7 +142,7 @@ const salaExemplo = {
 
 
 
-//  RETORNA TODAS OS PROFESSORES
+//  RETORNA TODoS OS PROFESSORES
 
 async function dataBaseGetProfessores() {
 
@@ -224,6 +224,87 @@ async function dataBaseEditProfessor(id, name, dep, subject, color) {
 
 };
 
+//  RETORNA TODAS AS SALAS
+
+async function dataBaseGetSalas() {
+
+    let result = {};
+
+    try {
+        // Buscar itens da coleção principal
+        //const q = query( collection(db, 'professores'), where('estado', '==', estado) );
+        const collectionRef = collection(db, `salas`);
+        const collectionSnapshot = await getDocs(collectionRef);    // <- PEGA TODAS OS DOCS DA COLEÇÃO (QUE PASSARAM NO FILTRO)
+        console.log('Docs (salas) retornados com sucesso!');
+        
+        collectionSnapshot.docs.map(doc => {
+            result[doc.id] = { ...doc.data() };            
+        });     
+
+    } catch (error) {
+        console.error('Erro ao buscar documentos:', error);
+    }
+
+    return result;
+};
+
+//  FUNCÃO QUE ADICIONA NA COLLECTION SALAS
+
+async function dataBaseAddSalas(name, building) {
+
+    const data = {
+        nome: name,
+        predio: building,
+        agenda: agendaExemplo
+    };
+
+    try {
+        const collectionRef = collection(db, `salas`);
+        const docRef = await addDoc(collectionRef, data);
+        console.log('Documento adicionado à coleção SALAS com ID:', docRef.id);
+    } catch (error) {
+        console.error('Erro ao adicionar documento à coleção:', error);
+    };
+
+};
+
+//  FUNCÃO QUE REMOVE UMA SALA
+
+async function dataBaseRemoveSala(id) {
+   
+    try {
+        const docRef = doc(db, `salas`, id);
+        await deleteDoc( docRef );
+        console.log('Sala deletada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao deletar sala da coleção', error);
+    };
+
+};
+
+//  FUNCÃO QUE EDITA UMA SALA
+
+async function dataBaseEditSala(id, name, predio, objAgenda) {
+   
+    
+    
+    
+    const data = {
+        nome: name,
+        predio: predio,
+        agenda: ag,
+    };
+    
+    try {
+        const docRef = doc(db, `salas`, id);
+        await updateDoc( docRef, data );
+        console.log('Sala atualizada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao atualizar dados da sala', error);
+    };
+
+};
+
 
 
 
@@ -250,7 +331,8 @@ dataBaseAddProfessor(
 //dataBaseRemoveProfessor('1g83MR0hgpSQOkBSMCFI')
 
 
-console.log(await dataBaseGetProfessores())
+//console.log(await dataBaseGetProfessores())
 
+//dataBaseAddSalas('sala-404', 'CT-09')
 
 
