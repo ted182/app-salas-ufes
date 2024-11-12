@@ -312,13 +312,12 @@ async function dataBaseRemoveSala(id) {
 
 async function dataBaseEditSala(id, name, predio, objAgenda) {
 
-
-
+    //const dataRegistered = await dataBaseGetSala(id);
 
     const data = {
         nome: name,
         predio: predio,
-        agenda: ag,
+        agenda: objAgenda,
     };
 
     try {
